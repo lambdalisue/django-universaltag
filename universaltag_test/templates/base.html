@@ -1,0 +1,25 @@
+<!Doctype HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf8">
+		<title>UniversalTag Test Web</title>
+		<link type="text/css" rel="stylesheet" media="screen" href="{{ STATIC_URL }}css/baseline.compress.css">
+		<link type="text/css" rel="stylesheet" media="screen" href="{{ STATIC_URL }}css/layout.css">
+		<script type="text/javascript" src="{{ STATIC_URL }}javascript/html5.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.6.1.min.js"></script>
+
+	</head>
+	<body>
+		<div id="container">
+			<header>
+				<h1><a href="/">UniversalTag Test Web</a></h1>
+				<p>Django's universal tag library testing website</p>
+			</header>
+			<nav id="admin"><a href="/admin/">Admin</a></nav>
+			<section>
+				{% block content %}
+				{% endblock %}
+			</section>
+		</div>
+	</body>
+</html>

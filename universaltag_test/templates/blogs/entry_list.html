@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load universaltag_tags %}
+
+{% block content %}
+{% for entry in object_list %}
+<article>
+	{{ entry.title }}
+	{{ entry.body }}
+	{% render_universaltag_tags of entry %}
+	{% get_universaltag_api_url of entry to universaltag_api_url %}
+	<a href="{{ universaltag_api_url }}">JSON</a>
+	
+</article>
+<hr>
+{% endfor %}
+{% endblock %}

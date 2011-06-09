@@ -1,0 +1,8 @@
+{% block content %}
+<h1>{{ object }}</h1>
+<ul>
+{% for item in tag.items %}
+	<li><a href="{{ item.get_absolute_url }}">{{ item.content_object }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

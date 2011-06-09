@@ -1,0 +1,13 @@
+{% load i18n %}
+<ul class="universaltag" 
+	content_type="{{ content_type }}" 
+	object_id="{{ object_id }}" 
+	{% if is_freezable %}freezable="freezable"{% endif %}>
+	{% for item in tagged_items %}
+	<li class="tag{% if item.frozen %} frozen{% endif %}" pk="{{ item.tag.pk }}">
+		<a href="{{ item.tag.get_absolute_url }}">{{ item.tag }}</a>
+	</li>
+	{% empty %}
+	<li class="tag empty"><a href="#">{% trans "No tags" %}</a></li>
+	{% endfor %}
+</ul>

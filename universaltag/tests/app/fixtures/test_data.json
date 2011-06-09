@@ -1,0 +1,12 @@
+[
+{"pk": 1, "model": "app.book", "fields": {"body": "foofoofoo", "title": "foo", "author": 1}},
+{"pk": 2, "model": "app.book", "fields": {"body": "barbarbar", "title": "bar", "author": 1}},
+{"pk": 1, "model": "universaltag.tag", "fields": {"label": "tag1"}},
+{"pk": 2, "model": "universaltag.tag", "fields": {"label": "tag2"}},
+{"pk": 3, "model": "universaltag.tag", "fields": {"label": "tag3"}},
+{"pk": 4, "model": "universaltag.tag", "fields": {"label": "tag4"}},
+{"pk": 5, "model": "universaltag.tag", "fields": {"label": "tag5"}},
+{"pk": 1, "model": "universaltag.taggeditem", "fields": {"frozen": false, "tag": 1, "object_id": 1, "content_type": ["app", "book"], "order": 1}},
+{"pk": 2, "model": "universaltag.taggeditem", "fields": {"frozen": false, "tag": 2, "object_id": 1, "content_type": ["app", "book"], "order": 2}},
+{"pk": 3, "model": "universaltag.taggeditem", "fields": {"frozen": false, "tag": 3, "object_id": 1, "content_type": ["app", "book"], "order": 3}}
+]
