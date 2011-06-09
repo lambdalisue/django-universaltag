@@ -1,0 +1,14 @@
+Introduction
+=================================================
+django-universaltag is a library to tagging django models universaly.
+
+
+Install
+=================================================
+
+	sudo pip install git+git://github.com/lambdalisue/django-universaltag.git#egg=django-universaltag
+
+
+Required (Automatically installed)
+=================================================
++ django-piston (falked version: https://bitbucket.org/lambdalisue/django-piston)
