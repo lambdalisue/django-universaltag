@@ -30,7 +30,7 @@ setup(
         download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
         license = 'BSD',
         packages = find_packages(),
-        #include_package_data = True,
+        include_package_data = True,
         zip_safe = True,
         install_requires=['setuptools', 'django-piston'],
 )
