@@ -2,7 +2,7 @@ Introduction
 =================================================
 django-universaltag is a library to tagging django models universaly.
 
-See <a href="http://demo.django-universaltag.hashnote.net/">Demo</a> to what this application does.
+See <a href="http://demos.django-universaltag.hashnote.net/">Demo</a> to what this application does.
 
 Install
 =================================================
