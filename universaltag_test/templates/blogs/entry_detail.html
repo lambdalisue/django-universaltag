@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load universaltag_tags %}
+
+{% block head %}
+{% render_universaltag_head %}
+{% endblock %}
+
+{% block content %}
+<article id="entry">
+	<h2>{{ entry.title }}</h2>
+	
+	<article class="body">
+		<p>{{ entry.body }}</p>
+	</article>
+
+	<aside>
+		{% render_universaltag_tags of entry %}
+	</aside>
+</article>
+<p><a href="/">&lt;&lt; Back to home</a></p>
+{% endblock %}

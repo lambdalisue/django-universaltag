@@ -4,6 +4,9 @@ body{
 	color: #3d3d3d;
 	
 }
+hr{
+	height: 1px;
+}
 a, a:visited{
 	color: #2f4f4f;
 	text-decoration: none;
@@ -52,23 +55,21 @@ nav#admin a{
 section#introduction{
 	padding: 20px 0;
 	border-top: 1px solid #dedede;
-	border-bottom: 1px solid #dedede;
 }
 section#content{
+	border-top: 1px solid #dedede;
 	border-bottom: 1px solid #dedede;
-}
-section#demo{
 	margin: 20px 0;
 }
-section#demo article.entry{
+section#content article.entry{
 	float: left;
 	width: 460px;
 	padding: 10px;
 }
-section#demo h3{
+section#content h3{
 	margin: 10px 0;
 }
-section#demo:after{
+section#content:after{
     visibility: hidden;
     display: block;
     font-size: 0;
@@ -76,9 +77,9 @@ section#demo:after{
     clear: both;
     height: 0;
 }
-* html section#demo
+* html section#content
 { zoom: 1; } /* IE6 */
-*:first-child+html section#demo
+*:first-child+html section#content
 { zoom: 1; } /* IE7 */
 
 footer{

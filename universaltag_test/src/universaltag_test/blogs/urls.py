@@ -37,5 +37,6 @@ from views import EntryDetailView
 from views import EntryListView
 
 urlpatterns = patterns('',
+    url('^(?P<pk>\d+)/$',           EntryDetailView.as_view(),  name="blogs-entry-detail"),  
     url('^$',                       EntryListView.as_view(),    name="blogs-entry-list"),  
 )

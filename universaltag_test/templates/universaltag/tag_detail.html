@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block content %}
+<h3>Objects tagged '{{ object }}'</h3>
+<p><a href="{% url 'universaltag-tag-list' %}">See registered tag list</a></p>
+<ul>
+{% for item in tag.items.iterator %}
+	<li><a href="{{ item.get_absolute_url }}">{{ item.content_object }}</a></li>
+{% endfor %}
+</ul>
+<p><a href="/">&lt;&lt; Back to home</a></p>
+{% endblock %}
