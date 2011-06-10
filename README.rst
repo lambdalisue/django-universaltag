@@ -1,25 +1,34 @@
-Introduction
-=================================================
-django-universaltag is a library to tagging django models universaly.
+``django-universaltag`` is a package for tagging Django models object universally.
 
-See <a href="http://demos.django-universaltag.hashnote.net/">Demo</a> to what this application does.
+This package is developing under https://github.com/lambdalisue/django-universaltag
+
+See http://demos.django-universaltag.hashnote.net/ for Demo.
+
+Required
+==================
+
++   Falked version of `django-piston <https://bitbucket.org/lambdalisue/django-piston>`_
+
+Features
+==================
+
++   Using GenericRelation for relation so a tag can belong to any Django model object
++   Anonymous user can add, delete tags as many as they want
++   Author (object which a tag belong) can protect tag from deleting
++   Nice Ajax add, delete, lock, sort function
+
+See demo for more detail.
 
 Install
-=================================================
+=================
+::
 
-	sudo pip install git+git://github.com/lambdalisue/django-universaltag.git#egg=django-universaltag
+    $ sudo pip install git+git://github.com/lambdalisue/django-universaltag#egg=django-universaltag
 
+or::
+
+    $ sudo pip install django-universaltag
 
 How to use
 =================================================
-
-1.	Add `piston` and `universaltag` to your INSTALLED_APPS
-2.	Include `universaltag.urls` to your urls.py
-3.	Use `{% render_universaltag_tags of <object> %}` for rendering tags on template
-4.	Add `{% render_universaltag_head %}` to header part of HTML
-
-See `universaltag_test` app for more example.
-
-Required (Automatically installed)
-=================================================
-+ django-piston (falked version: https://bitbucket.org/lambdalisue/django-piston)
+See https://github.com/lambdalisue/django-universaltag/tree/master/universaltag_test source code for detail.
