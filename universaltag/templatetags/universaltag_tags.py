@@ -35,9 +35,9 @@ register = template.Library()
     
 class RenderUniversalTagHeadNode(template.Node):
     def render(self, context):
-        tags = Tag.objects.all()
+        suggestions = Tag.objects.all()
         context.push()
-        html = render_to_string('universaltag/head.html', {'tags': tags}, context)
+        html = render_to_string('universaltag/head.html', {'suggestions': suggestions}, context)
         context.pop()
         return html
     
@@ -48,9 +48,9 @@ class RenderUniversalTagNode(template.Node):
         
     def render(self, context):
         def is_freezable(request, object):
-            if hasattr(request, 'user'):
+            if hasattr(request, 'user') and request.user.is_authenticated():
                 for attr in settings.UNIVERSALTAG_AUTHOR_ATTRS:
-                    if getattr(object, attr) == request.user:
+                    if getattr(object, attr, None) == request.user:
                         return True
             return False
         request = template.resolve_variable('request', context)
@@ -66,8 +66,7 @@ class RenderUniversalTagNode(template.Node):
         context.push()
         kwargs = {
             'tagged_items': tagged_items,
-            'content_type': ctype.pk,
-            'object_id':    object.pk,
+            'universaltag_api_url': reverse('universaltag-api', args=(ctype.pk, object.pk)),
             'is_freezable': is_freezable(request, object),
         }
         html = render_to_string('universaltag/list.html', kwargs, context)

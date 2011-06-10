@@ -28,18 +28,19 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
-from piston.handler import AnonymousBaseHandler, BaseHandler
+from piston.handler import BaseHandler
 from piston.utils import rc, validate, throttle
 
 from ..models import TaggedItem
 from ..utils import parse_tag_input
+from ..exceptions import DuplicateError
 
 class ValidationPOSTForm(forms.Form):
     """Form for POST validation"""
-    labels = forms.CharField(max_length=settings.UNIVERSALTAG_TAG_LENGTH)
+    labels = forms.CharField()
 class ValidationPUTForm(forms.Form):
     """Form for PUT validation"""
-    labels = forms.CharField(max_length=settings.UNIVERSALTAG_TAG_LENGTH, required=False)
+    labels = forms.CharField(required=False)
 
 def get_or_not_found(fn):
     """Get and set object or return rc.NOT_FOUND decorator
@@ -63,16 +64,16 @@ class TaggedItemHandler(BaseHandler):
     model = TaggedItem
     fields = (
         'pk',
-        ('tag', ('pk', 'label')),
-        'frozen', 'order'
+        ('tag', ('pk', 'label', 'absolute_uri')),
+        'frozen', 'order',
+        'absolute_uri'
     )
+    
     @get_or_not_found
     def read(self, request, content_type, object_id, label=None):
         qs = self.model.objects.get_for_object(request.obj)
-        
         if label:
             return qs.get(tag__label=label)
-        
         return qs
     
     @get_or_not_found
@@ -80,9 +81,15 @@ class TaggedItemHandler(BaseHandler):
     @throttle(100, 10*60)
     def create(self, request, content_type, object_id):
         labels = parse_tag_input(request.form.cleaned_data['labels'])
+        instance_list = []
         for label in labels:
-            self.model.objects.add_or_get(request.obj, label)
-        return rc.CREATED
+            if len(label) > settings.UNIVERSALTAG_TAG_LENGTH:
+                continue
+            try:
+                instance_list.append(self.model.objects.add_or_get(request.obj, label, False))
+            except DuplicateError:
+                pass
+        return instance_list
     
     @get_or_not_found
     @validate(ValidationPUTForm, 'PUT')
@@ -95,15 +102,14 @@ class TaggedItemHandler(BaseHandler):
                 tagged_item = self.model.objects.add_or_get(request.obj, label)
                 tagged_item.order = i
                 tagged_item.save()
-            return rc.ALL_OK
+            return TaggedItem.objects.get_for_object(request.obj)
         else:
             # Toggle tag freeze status
             # Only author of obj can freeze/thaw tag
-            if hasattr(request, 'user') and request.user.is_authenticated:
+            if hasattr(request, 'user') and request.user.is_authenticated():
                 for attr in settings.UNIVERSALTAG_AUTHOR_ATTRS:
                     if getattr(request.obj, attr, None) == request.user:
-                        self.model.objects.freeze(request.obj, label)
-                        return rc.ALL_OK
+                        return self.model.objects.freeze(request.obj, label)
             return rc.FORBIDDEN
         
     @get_or_not_found

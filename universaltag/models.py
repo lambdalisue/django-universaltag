@@ -173,7 +173,7 @@ class Tag(models.Model):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('universaltag-tag-detail', (), {'slug': self.label})
+        return ('universaltag-tag-detail', (self.label,))
 
 class TaggedItem(models.Model):
     """Bridge model of tag and model with generic relation."""
@@ -206,12 +206,13 @@ class TaggedItem(models.Model):
             else:
                 self.order = 0
         super(TaggedItem, self).save(*args, **kwargs)
-        
+    
     def get_absolute_url(self):
         """Return permalink of object related."""
-        return ("universaltag-api", (self.content_type.pk, self.object_id, self.tag.label))
+        if hasattr(self.content_object, 'get_absolute_url'):
+            return self.content_object.get_absolute_url()
+        return ""
     
     @models.permalink
     def get_api_url(self):
-        return ("universaltag-api", (self.content_type.pk, self.object_id, self.tag.label))
-        
+        return ("universaltag-api", (self.content_type.pk, self.object_id))

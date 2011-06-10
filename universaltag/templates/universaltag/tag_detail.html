@@ -1,7 +1,7 @@
 {% block content %}
 <h1>{{ object }}</h1>
 <ul>
-{% for item in tag.items %}
+{% for item in tag.items.iterator %}
 	<li><a href="{{ item.get_absolute_url }}">{{ item.content_object }}</a></li>
 {% endfor %}
 </ul>

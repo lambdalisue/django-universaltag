@@ -1,0 +1,170 @@
+@charset "utf-8";
+/*
+ * django-universaltag Design CSS
+ * 
+ * @author Alisue <lambdalisue@hashnote.net>
+ * @url http://hashnote.net/
+ * 
+ */
+ul.universaltag {
+	margin: 10px 0;
+	padding: 0;
+}
+ul.universaltag li{
+	list-style: none;
+}
+/* tag ------------------------------------------------------------------ */
+ul.universaltag li.tag {
+	position: relative;
+	display: block;
+	float: left;
+	width: auto;
+	height: auto;
+	margin: 0 5px 3px 0;
+	padding: 0;
+	border: 1px solid #dedede;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	background: #efefef;
+	font-size: 9px;
+	line-height: 15px;
+}
+
+ul.universaltag li.tag.frozen{
+	background-color: #d0d0d0;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+ul.universaltag li.tag:hover{
+	background-color: #fefefe;
+}
+ul.universaltag li.tag.frozen:hover{
+	background-color: #e0e0e0;
+}
+ul.universaltag li.tag a{
+	display: block;
+	width: auto; 
+	height: 100%;
+	padding: 0px 10px;
+	text-decoration: none;
+	outline: none;
+	color: #3d3d3d;
+}
+ul.universaltag li.tag a:visited{
+	color: #3d3d3d;
+}
+/* clearfix ------------------------------------------------------------- */
+ul.universaltag:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+* html ul.universaltag
+{ zoom: 1; } /* IE6 */
+*:first-child+html ul.universaltag
+{ zoom: 1; } /* IE7 */
+
+/* buttons ---------------------------------------------------------------- */
+div.universaltag ul.universaltag a.button{
+	display: block;
+	padding: 0;
+	margin: 0;
+	border: none;
+	background: url(image/django.universaltag.sprites.png) no-repeat;
+	outline: none;
+	text-indent: -100000px;
+}
+/* pencilcase ------------------------------------------------------------------ */
+div.universaltag ul.universaltag li.pencilcase{
+	display: block;
+	clear: both;
+	margin: 0 0 10px 0;
+	padding: 5px 0 0 0;
+	height: 18px;
+}
+/* pencilcase open ------------------------------------------------------------- */
+div.universaltag ul.universaltag li.pencilcase a.button.open{
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin: 0 10px 0 0;
+	background: url(image/django.universaltag.show.png) no-repeat 0 0;
+}
+div.universaltag ul.universaltag li.pencilcase a.button.open:hover{
+	background-position: 0 -16px;
+}
+div.universaltag ul.universaltag li.pencilcase a.button.open.active{
+	background-position: 0 -32px !important;
+}
+/* pencilcase pencilset --------------------------------------------------------- */
+div.universaltag ul.universaltag li.pencilcase div.pencilset{
+	position: relative;
+	width: 100px;
+}
+div.universaltag ul.universaltag li.pencilcase div.pencilset input{
+	display: block;
+	/*width: 150px;*/
+	width:10em;
+	margin: 0;
+	padding: 2px 20px 2px 10px;
+	border: 1px solid #dedede;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	height: 12px;
+	font-size: 0.8em;
+}
+div.universaltag ul.universaltag li.pencilcase div.pencilset a.button.close{
+	position: absolute;
+	right: -50px; top: 6px;
+	width: 5px;
+	height: 5px;
+	background-position: 0 -5px;
+}
+div.universaltag ul.universaltag li.pencilcase div.pencilset a.button.close:hover{
+	background-position: 0 -10px;
+}
+/* toolbox ----------------------------------------------------------------- */
+div.universaltag ul.universaltag li.tag div.toolbox a.delete{
+	position: absolute;
+	right: 3px; top: 5px;
+	width: 5px;
+	height: 5px;
+	background-position: 0 0;
+	cursor: default;
+}
+div.universaltag ul.universaltag li.tag:hover div.toolbox a.button.delete{
+	background-position: 0 -5px;
+}
+div.universaltag ul.universaltag li.tag:hover div.toolbox a.button.delete:hover{
+	background-position: 0 -10px;
+}
+/* freeze ----------------------------------------------------------- */
+div.universaltag ul.universaltag li.tag div.toolbox a.button.freeze{
+	position: absolute;
+	left: 3px; top: 5px;
+	width: 5px;
+	height: 5px;
+	background-position: -5px 0;
+	cursor: default;
+}
+div.universaltag ul.universaltag li.tag.frozen div.toolbox a.button.freeze{
+	background-position: -10px 0;
+}
+div.universaltag ul.universaltag li.tag:hover div.toolbox a.button.freeze{
+	background-position: -5px -5px;
+}
+div.universaltag ul.universaltag li.tag.frozen:hover div.toolbox a.button.freeze{
+	background-position: -10px -5px;
+}
+div.universaltag ul.universaltag li.tag:hover div.toolbox a.button.freeze:hover{
+	background-position: -5px -10px;
+}
+div.universaltag ul.universaltag li.tag.frozen:hover div.toolbox a.button.freeze:hover{
+	background-position: -10px -10px;
+}

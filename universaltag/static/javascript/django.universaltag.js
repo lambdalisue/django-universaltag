@@ -1,14 +1,29 @@
 /*
- * django.universaltag.js
+ * django-universaltag Ajax JavaScript
  * 
- * Author:		dotdister
- * Inspector: 	giginet
- * 				alisue
- *	
+ * @author:		Alisue <lambdalisue@hashnote.net>
+ * @url:		http://hashnote.net/
+ *
+ * Required:
+ * - jQuery over 1.3
+ * - jQuery UI (Autocomplete, DragDrop)
+ * 
  */
 (function($){
-	// Define PUT, DELETE method
+	// Define POST, PUT, DELETE method for RESTful API
 	$.extend({
+		"post": function(url, data, success, error) {
+			error = error || function() {};
+			return $.ajax({
+				"url": url,
+				"data": data,
+				"success": success,
+				"type": "POST",
+				"cache": false,
+				"error": error,
+				"dataType": "json"
+			});
+		},
 		"put": function(url, data, success, error) {
 			error = error || function() {};
 			return $.ajax({
@@ -34,281 +49,209 @@
 			});
 		}
 	});
+	String.prototype.strip = function(){
+		return this.replace(/^\s*(.*?)\s*$/, "$1");
+	}
 	// Define universalTag
 	$.fn.universalTag = function(settings){
 		settings = $.extend(true, {
-			suggestions: [],
-			classes: {
-				wrap:	'universaltag',
-				tag:	'tag',
-				frozen:	'frozen',
-				tools:	'tools',
-				buttons: {
-					add_show:	'show',
-					add_close:	"close",
-					del:		'delete',
-					freeze:		'freeze'
-				}
+			'suggestions': [],
+			'classes': {
+				'wrap':	'universaltag',
+				'tag': 'tag',
+				'frozen': 'frozen'
 			},
-			urls: {
-				add:	'',
-				del:	'',
-				freeze:	'',
-				sort:	''
+			'titles': {
+				'inputBox': "Press [Enter] to post.",
+				'closeButton': "Close input field.",
+				'openButton': "Open input field.",
+				'deleteButton': "Delete this tag.",
+				'freezeButtonThaw': "Thaw this tag.",
+				'freezeButtonFreeze': "Freeze this tag."
 			},
-			titles: {
-				add_show:	"タグ追加フォームを表示します",
-				add_close:	"タグ追加フォームを隠します",
-				add_input:	"スペース・エンターで投稿します",
-				del:		"タグを削除します",
-				freeze:		"タグを凍結します",
-				thaw:		"タグを解凍します"
+			'plugins': {
+				'autocomplete':	true,
 			},
-			plugins: {
-				autocomplete:	true,
-				contextmenu:	true
-			},
-			debug:		false
+			'tag_max_length': 50,
+			'debug': true
 		}, settings);
-		if (!settings.urls.add || !settings.urls.del || !settings.urls.freeze || !settings.urls.sort){
-			if (settings.debug) {
-				alert("Exception: could not found required options [will quit] (django.tagging.js)\n\n" +
-					"To enable the feature of editing tags, `urls` options is required.\n" +
-					"Please make sure that you have configured it correctly.\n\n"+
-					"(You see this message because `debug` option is set `true`)");
-			}
-			return false;
+		function getApiUrl($ul){
+			return $ul.attr('universaltag_api_url');
+		}
+		function isFreezable($ul){
+			return $ul.attr('freezable') && $ul.attr('freezable') != '';
+		}
+		function isDeletable($tag){
+			return !$tag.hasClass(settings.classes.frozen);
 		}
 		return this.each(function(){
 			var $ul = $(this).wrap($('<div>').addClass(settings.classes.wrap));
-			if (!$ul.attr('content_type') || !$ul.attr('object_id')){
+			if (!getApiUrl($ul)){
 				if (settings.debug) {
 					alert("Warning: wrong ul is selected (django.universaltag.js)\n\n"+
-						"`ul` doesn't have custome attribute (`content_type` and `object_id`).\n"+
+						"`ul` doesn't have custome attribute (`universaltag_api_url`).\n"+
 						"To enable the feature of editing tags, these custome attribute is reqiured.\n"+
 						"Please make sure that you have configured it correctly.\n\n" +
 						"(You see this message because `debug` option is set `true`)");
 				}
 				return false;
 			}
-			function generateTag(tagged_item){
+			function factoryTag(instance, freezable){
 				var $tag = $('<li>').addClass(settings.classes.tag);
-				if(tagged_item.frozen){
+				if(instance.frozen){
 					$tag.addClass(settings.classes.frozen);
 				}
-				$tag.append($('<a>').attr('href', tag.url).text(tag.label));
-				// タグツール（削除・凍結）を追加
-				addTagToolsToTag($tag);
-				if (settings.plugins.contextmenu){
-					// タグにコンテキストメニューを追加
-					$tag.contextMenu('context-menu', initContextMenu());
-				}
+				$tag.append($('<a>').attr('href', instance.tag.absolute_uri).text(instance.tag.label));
+				$tag.append(factoryToolbox(freezable, isDeletable($tag)));
 				return $tag;
-			};
-			// addDialogの初期化
-			function initAddDialog(){
-				var $addDialog = $('<li>').addClass(settings.classes.tools).addClass('clearfix');
-				var $fieldset = $('<div>').addClass('fieldset').hide();
-				var $input = $('<input>');
-				var $showButton = $('<a>').addClass('button').addClass(settings.classes.buttons.add_show);
-				var $closeButton = $('<a>').addClass('button').addClass(settings.classes.buttons.add_close);
-				// タグの追加関数
-				function postAdd(){
-					post(settings.urls.add, $input.val(), function(data){
-						if (data.status == 'ok'){
-							$.each(data.instance_list, function(){
-								var $tag = generateTag(this).hide();
-								$addDialog.before($tag);
-								$tag.show('fast', function(){
-									$('li.tag.empty', $ul).hide('fast', function(){$(this).remove()});
-								});
-							});
-							// 成功しているので入力欄を初期化
-							$input.val('');
-						} else {
-							alert("Error:\n\n" + data.errors.join("\n"));
-						}
-					});
-				};
-				// フィールドセットを隠す
-				function hide(){
-					if ($fieldset.css('display') != 'none'){
-						$fieldset.hide('fast', function(){
-							$showButton.removeClass('active');
-						});
-					}
-				};
-				// フィールドセットを表示する
-				function show(){
-					if ($fieldset.css('display') == 'none'){
-						$fieldset.show('fast', function(){
-							$input.focus();
-							$showButton.addClass('active');
-						});
-					}
-				};
-				if (settings.plugins.autocomplete) {
-					// 入力欄の初期化処理
-					$input.attr('title', settings.titles.add_input);
-				}
-				// 入力補佐を有効化（ required jQuery-UI autocomplete )
-				if($input.autocomplete != undefined){
-					$input.autocomplete({
-						'source': settings.suggestions
-					});
-				}
-				$input.keydown(function(e){
-					// TODO: ダブルクオーテーション入力によるスペース・コンマ処理
-					if (e.keyCode == 27){
-						// ESC: キャンセル処理
-						$input.val('');
-						$hide();
-					} else if (e.keyCode == 32 || e.keyCode == 188){
-						// SPACE, COMMA: 連続投稿処理
-						postAdd();
-					} else if (e.keyCode == 13) {
-						// ENTER: 投稿処理
-						postAdd();
-						$hide();
-					} else {
-						return true;
-					}
-					// 処理を行ったので入力情報を破棄
-					return false;
-				});
-				// 入力欄表示ボタンの初期化処理
-				$showButton.attr('href', 'javascript:void(0)');
-				$showButton.attr('title', settings.titles.add_show);
-				$showButton.click(show);
-				// 入力欄クローズボタンの初期化処理
-				$closeButton.attr('href', 'javascript:void(0)');
-				$closeButton.attr('title', settings.titles.add_close);
-				$closeButton.click(hide);
-				// エレメントを追加しダイアログを作成
-				$fieldset.append($input).append($closeButton);
-				$addDialog.append($showButton);
-				$addDialog.append($fieldset);
-				return $addDialog;
-			};
-			// 削除ボタン
-			function initDeleteButton(){
-				var $button = $('<a>').addClass('button').addClass(settings.classes.buttons.del);
-				$button.attr('href', 'javascript:void(0)');
-				$button.attr('title', settings.titles.del);
-				$button.click(function(){
-					var $target = $button.parent('li.tag');
-					post(settings.urls.del,'"'+$target.text()+'"', function(data){
-						if(data.status == 'ok'){
-							// 元データが li.tag から取ってきているため帰ってくるデータ
-							// は最大で1個。したがって以下のような分岐が可能
-							if (data.errors){
-								alert("Error:\n\n" + data.errors.join("\n"));
-							}else{
-								$target.hide('fast', function(){
-									$(this).remove();
-									if($('li.tag', $ul).length == 0){
-										// タグなし権兵衛追加
-										var $tag = $('<li>').addClass(settings.classes.tag).addClass('empty');
-										$tag.html("<a href='#'>タグ無し権兵衛</a>");
-										$('li.'+settings.classes.tools, $ul).before($tag);
-									}
-								});
-							}
-						} else {
-							alert("Exception:\n\n" + data.errors.join("\n"));
-						}
-					});
-				});
-				return $button;
-			};
-			// 凍結ボタン
-			function initFrozeButton(){
-				// 親タグの状態によりヘルプテキストを選択する関数
-				function setTitle($button){
-					var $tag = $button.parent('li.tag');
-					if ($tag.hasClass(settings.classes.frozen)){
-						$button.attr('title', settings.titles.thaw);
-					}else{
-						$button.attr('title', settings.titles.freeze);
-					}
-					return $button;
-				}
-				var $button = $('<a>').addClass('button').addClass(settings.classes.buttons.freeze);
-				$button.attr('href', 'javascript:void(0)');
-				$button = setTitle($button);
-				$button.click(function(){
-					var $target = $button.parent('li.tag');
-					post(settings.urls.freeze, '"'+$target.text()+'"', function(data){
-						if(data.status == 'ok'){
-							// 元データが li.tag から取ってきているため帰ってくるデータ
-							// は最大で1個。したがって以下のような分岐が可能
-							if (data.errors){
-								alert("Error:\n\n" + data.errors.join("\n"));
-							}else{
-								if(data.instance_list[0].frozen){
-									$target.addClass(settings.classes.frozen);
-									$('a.button.'+settings.classes.buttons.del, $target).hide('fast');
-								}else{
-									$target.removeClass(settings.classes.frozen);
-									$('a.button.'+settings.classes.buttons.del, $target).show('fast');
-								}
-								$button = setTitle($button);
-							}
-						} else {
-							alert("Error:\n\n" + data.errors.join("\n"));
-						}
-					});
-				});
-				return $button;
-			};
-			// タグツール（削除・凍結ボタン）をタグに追加する関数
-			function addTagToolsToTag($tag){
-				$tag.append(initDeleteButton());
-				if ($ul.attr('owned') != ''){
-					$tag.append(initFrozeButton());
-					if ($tag.hasClass(settings.classes.frozen)){
-						// 凍結タグは削除できない
-						$('a.button.'+settings.classes.buttons.del, $tag).hide();
-					}
-				}
-			};
-			// ContextMenu
-			function initContextMenu(){
-				var menu = {
-					"タグを削除する": {
-						click: function(elm){
-							$('a.button.'+settings.classes.buttons.del, $(elm)).click();
-						},
-						klass: settings.classes.buttons.del
-					},
-					"タグを凍結・解除する": {
-						click: function(elm){
-							$('a.button.'+settings.classes.buttons.freeze, $(elm)).click();
-						},
-						klass: settings.classes.buttons.freeze
-					}
-				};
-				return menu;
-			};
-			// タグ追加フォームの追加
-			$ul.append(initAddDialog());
-			// 個々のタグに対する処理（削除・凍結）を適用
-			$('li.tag:not(.empty)', $ul).each(function(){
-				addTagToolsToTag($(this));
-			});
-			// 並び替えを可能にする
-			$ul.sortable({items:"li.tag:not(.empty)", stop: function(){
-				labels = "";
-				$('li.tag:not(.empty)', $ul).each(function(){
-					// スペース等を含むタグに対応するためにダブルクオーテーションでラップ
-					labels += '"' + $(this).text() + '", ';
-				});
-				post(settings.urls.sort, labels);
-			}});
-			if (settings.plugins.contextmenu){
-				// 右クリックメニューを登録する
-				$('li.tag', $ul).contextMenu('context-menu', initContextMenu());
 			}
+			function addTag($ul, labels){
+				labels = labels || $('li.pencilcase div.pencilset input', $ul).val();
+				$.post(getApiUrl($ul), {'labels': labels}, function(data, textStatus){
+					$.each(data, function(){
+						$('li.pencilcase div.pencilset input', $ul).val('');
+						var $tag = factoryTag(this, isFreezable($ul)).hide();
+						$('li.pencilcase', $ul).before($tag);
+						$tag.show("fast");
+					});
+				});
+			}
+			function delTag($ul, $tag){
+				var url = getApiUrl($ul) + $tag.text() + "/";
+				$.del(url, {}, function(data, textStatus){
+					$tag.hide("fast", function(){
+						$(this).remove();
+					});
+				});
+			}
+			function frzTag($ul, $tag){
+				var url = getApiUrl($ul) + $tag.text() + "/";
+				$.put(url, {}, function(data, textStatus){
+					if(data.frozen){
+						$tag.addClass(settings.classes.frozen);
+						$('a.button.delete', $tag).hide('fast');
+					}else{
+						$tag.removeClass(settings.classes.frozen);
+						$('a.button.delete', $tag).show('fast');
+					}
+				});
+			}
+			function srtTag($ul, labels){
+				if(typeof(labels) == 'undefined'){
+					labels = "";
+					$('li.tag', $ul).each(function(){
+						labels += '"' + $(this).text().strip() + '", ';
+					});
+					labels = labels.slice(0, -2);
+				}
+				$.put(getApiUrl($ul), {'labels': labels});
+			}
+			function factoryButton(cls, title, click){
+				var $button = $('<a>').addClass('button').addClass(cls);
+				$button.attr('href', 'javascript:void(0);')
+				$button.attr('title', title);
+				$button.click(click);
+				return $button;
+			}
+			function factoryPencilCase(){
+				function openPencilSet($pencilset){
+					if($pencilset.css('display') == 'none'){
+						$pencilset.show('fast', function(){
+							$('input', $pencilset).focus();
+							$('a.button.open', $pencilset).addClass('active');
+						});
+					}
+				}
+				function closePencilSet($pencilset){
+					if($pencilset.css('display') != 'none'){
+						$pencilset.hide('fast', function(){
+							$('div.pencilset input', $pencilset).val('');
+							$('a.button.open', $pencilcase).removeClass('active');
+						});
+					}
+				}
+				function factoryPencilSet($pencilcase){
+					var $pencilset = $('<div>').addClass('pencilset');
+					var $inputbox = $('<input>');
+					$inputbox.attr('title', settings.titles.inputBox);
+					$inputbox.attr('maxlength', settings.tag_max_length);
+					if(settings.plugins.autocomplete){
+						if(typeof($inputbox.autocomplete) != "undefined"){
+							$inputbox.autocomplete({
+								'source': settings.suggestions
+							});
+						}
+					}
+					$inputbox.keydown(function(e){
+						if(e.keyCode == 27){ // ESC: Cancel
+							closePencilSet($pencilset);
+						}else if(e.keyCode == 13){ //Return: Post
+							var $ul = $(this).parents('ul.universaltag');
+							addTag($ul);
+						}else{
+							return true;
+						}
+						return false;
+					});
+					var $closebtn = factoryButton('close', settings.titles.closeButton, function(){
+						closePencilSet($pencilset);
+					});
+					$pencilset.append($inputbox).append($closebtn);
+					$pencilset.hide();
+					return $pencilset;
+				}
+				var $pencilcase = $('<li>').addClass('pencilcase');
+				var $pencilset = factoryPencilSet($pencilcase);
+				var $openbtn = factoryButton('open', settings.titles.openButton, function(){
+					openPencilSet($pencilset);
+				});
+				
+				$pencilcase.append($openbtn);
+				$pencilcase.append($pencilset);
+				return $pencilcase;
+			}
+			function factoryToolbox(freezable, deletable){
+				var $toolbox = $('<div>').addClass('toolbox');
+				var $deletebtn = factoryButton('delete', settings.titles.deleteButton, function(){
+					var $ul = $(this).parents('ul.universaltag');
+					var $tag = $(this).parents('li.tag');
+					delTag($ul, $tag);
+				});
+				if(!deletable){
+					$deletebtn.hide();
+				}
+				$toolbox.append($deletebtn);
+				if(freezable){
+					function autoSetFreezeButtonTitle($freezebtn){
+						var $tag = $freezebtn.parent('li.tag');
+						if($tag.hasClass('frozen')){
+							$freezebtn.attr('title', settings.titles.freezeButtonThaw);
+						}else{
+							$freezebtn.attr('title', settings.titles.freezeButtonFreeze);
+						}
+						return $freezebtn;
+					}
+					var $freezebtn = factoryButton('freeze', '', function(){
+						var $ul = $(this).parents('ul.universaltag');
+						var $tag = $(this).parents('li.tag');
+						frzTag($ul, $tag);
+						autoSetFreezeButtonTitle($(this));
+					});
+					autoSetFreezeButtonTitle($freezebtn);	
+					$toolbox.append($freezebtn);
+				}
+				return $toolbox;
+			}
+			$ul.append(factoryPencilCase());
+			// Apply toolbox to each tags
+			$('li.tag', $ul).each(function(){
+				$(this).append(factoryToolbox(isFreezable($ul), isDeletable($(this))));
+				
+			});
+			// Make to be able sort
+			$ul.sortable({items:"li.tag", stop: function(){
+				srtTag($ul);
+			}});
 		});
 	};
 })(jQuery);

@@ -1,0 +1,13 @@
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/django.universaltag.css">
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/django.universaltag.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("ul.universaltag").universalTag({
+			'suggestions': [
+				{% for tag in suggestions %}
+				"{{ tag.label|escapejs }}"{% if not forloop.last %},{% endif %}
+				{% endfor %}
+			]
+		});
+	});
+</script>
