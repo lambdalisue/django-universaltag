@@ -27,13 +27,13 @@ setup(
     author = "Alisue",
     author_email = "lambdalisue@hashnote.net",
     url=r"https://github.com/lambdalisue/django-universaltag",
-    download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master#egg=django-universaltag",
+    download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
     license = 'BSD',
     packages = find_packages(),
     include_package_data = True,
-    install_requires=['distrubute'],
-    dependency_links = [
-        'https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#egg=django-piston'
-    ]
+    install_requires=['distribute'],
+#    dependency_links = [
+#        r"https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#django-piston",
+#    ]
 )
 
