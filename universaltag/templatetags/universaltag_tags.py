@@ -49,6 +49,8 @@ class RenderUniversalTagNode(template.Node):
     def render(self, context):
         def is_freezable(request, object):
             if hasattr(request, 'user') and request.user.is_authenticated():
+                if request.user.is_superuser:
+                    return True
                 for attr in settings.UNIVERSALTAG_AUTHOR_ATTRS:
                     if getattr(object, attr, None) == request.user:
                         return True

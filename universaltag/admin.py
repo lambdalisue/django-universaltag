@@ -33,7 +33,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields   = ('label',)
     
     def number_of_items(self, obj):
-        return len(obj.items)
+        return len(obj.items.iterators)
     number_of_items.short_description = _("Number of items")
     
 class TaggedItemAdmin(admin.ModelAdmin):

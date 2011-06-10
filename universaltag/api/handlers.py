@@ -107,6 +107,8 @@ class TaggedItemHandler(BaseHandler):
             # Toggle tag freeze status
             # Only author of obj can freeze/thaw tag
             if hasattr(request, 'user') and request.user.is_authenticated():
+                if request.user.is_superuser:
+                    return self.model.objects.freeze(request.obj, label)
                 for attr in settings.UNIVERSALTAG_AUTHOR_ATTRS:
                     if getattr(request.obj, attr, None) == request.user:
                         return self.model.objects.freeze(request.obj, label)
