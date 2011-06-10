@@ -80,7 +80,7 @@ class GeneralViewTestCase(TestCase):
         }
         previous_count = Tag.objects.count()
         response = self.client.post(url, data)
-        self.assertEquals(response.status_code, 201)
+        self.assertEquals(response.status_code, 200)
         self.assertEquals(Tag.objects.count(), previous_count+3)
     
     def test_api_put_sort(self):

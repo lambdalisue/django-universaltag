@@ -5,7 +5,7 @@ import os.path
 ROOT = os.path.join(os.path.dirname(__file__), '../../')
 sys.path.append(os.path.join(ROOT, '../'))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = []

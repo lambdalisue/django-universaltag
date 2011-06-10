@@ -32,8 +32,8 @@ setup(
     packages = find_packages(),
     include_package_data = True,
     install_requires=['distribute'],
-#    dependency_links = [
-#        r"https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#django-piston",
-#    ]
+    dependency_links = [
+        r"https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#egg=django-piston",
+    ]
 )
 
