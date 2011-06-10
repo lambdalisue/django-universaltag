@@ -13,26 +13,27 @@ def read(filename):
     return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 setup(
-        name="django-universaltag",
-        version=version,
-        description = "Universal tagging library for Django",
-        long_description=read('README.mkd'),
-        classifiers = [
-            'Intended Audience :: Developers',
-            'License :: OSI Approved :: BSD License',
-            'Programming Language :: Python',
-            'Topic :: Internet :: WWW/HTTP',
-        ],
-        keywords = "django tagging universal tag",
-        author = "Alisue",
-        author_email = "lambdalisue@hashnote.net",
-        url=r"https://github.com/lambdalisue/django-universaltag",
-        download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
-        license = 'BSD',
-        packages = find_packages(exclude=['universaltag_test']),
-        package_data = {'universaltag': ['*']},
-        include_package_data = True,
-        zip_safe = True,
-        install_requires=['setuptools', 'django-piston'],
+    name="django-universaltag",
+    version=version,
+    description = "Universal tagging library for Django",
+    long_description=read('README.rst'),
+    classifiers = [
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+        'Topic :: Internet :: WWW/HTTP',
+    ],
+    keywords = "django tagging universal tag",
+    author = "Alisue",
+    author_email = "lambdalisue@hashnote.net",
+    url=r"https://github.com/lambdalisue/django-universaltag",
+    download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master#egg=django-universaltag",
+    license = 'BSD',
+    packages = find_packages(),
+    include_package_data = True,
+    install_requires=['distrubute'],
+    dependency_links = [
+        'https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#egg=django-piston'
+    ]
 )
 
