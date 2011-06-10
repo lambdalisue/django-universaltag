@@ -2,12 +2,23 @@ Introduction
 =================================================
 django-universaltag is a library to tagging django models universaly.
 
+See <a href="http://demo.django-universaltag.hashnote.net/">Demo</a> to what this application does.
 
 Install
 =================================================
 
 	sudo pip install git+git://github.com/lambdalisue/django-universaltag.git#egg=django-universaltag
 
+
+How to use
+=================================================
+
+1.	Add `piston` and `universaltag` to your INSTALLED_APPS
+2.	Include `universaltag.urls` to your urls.py
+3.	Use `{% render_universaltag_tags of <object> %}` for rendering tags on template
+4.	Add `{% render_universaltag_head %}` to header part of HTML
+
+See `universaltag_test` app for more example.
 
 Required (Automatically installed)
 =================================================
