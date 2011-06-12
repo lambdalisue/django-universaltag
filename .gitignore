@@ -1,6 +1,6 @@
 *.pyc
-build
-dist
-*.egg-info
+/build
+/dist
+/*.egg-info
 universaltag_test/sqlite.db
 universaltag_test/static/collected

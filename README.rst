@@ -22,12 +22,11 @@ See demo for more detail.
 Install
 =================
 ::
-
-    $ sudo pip install git+git://github.com/lambdalisue/django-universaltag#egg=django-universaltag
+    $ sudo pip install django-universaltag
 
 or::
 
-    $ sudo pip install django-universaltag
+    $ sudo pip install git+git://github.com/lambdalisue/django-universaltag#egg=django-universaltag
 
 How to use
 =================================================
