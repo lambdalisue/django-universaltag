@@ -7,7 +7,7 @@ See http://demos.django-universaltag.hashnote.net/ for Demo.
 Required
 ==================
 
-+   Falked version of `django-piston <https://bitbucket.org/lambdalisue/django-piston>`_
++   `django-piston <https://bitbucket.org/jespern/django-piston>`_
 
 Features
 ==================
