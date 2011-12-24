@@ -32,3 +32,5 @@ settings.UNIVERSALTAG_TAG_LENGTH = \
     getattr(settings, 'UNIVERSALTAG_TAG_LENGTH', 50)
 settings.UNIVERSALTAG_AUTHOR_ATTRS = \
     getattr(settings, 'UNIVERSALTAG_AUTHOR_ATTRS', ('author', 'user', 'owner', 'created_by'))
+
+from patches.piston_issue_140_monkey_patch import *

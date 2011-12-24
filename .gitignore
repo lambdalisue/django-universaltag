@@ -2,5 +2,6 @@
 /build
 /dist
 /*.egg-info
-universaltag_test/sqlite.db
+*.db
 universaltag_test/static/collected
+

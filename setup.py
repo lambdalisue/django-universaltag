@@ -31,9 +31,10 @@ setup(
     license = 'BSD',
     packages = find_packages(),
     include_package_data = True,
-    install_requires=['distribute'],
-    dependency_links = [
-        r"https://bitbucket.org/lambdalisue/django-piston/get/a40885f1da15.tar.gz#egg=django-piston",
-    ]
+    install_requires=[
+        'setuptools',
+        'django>=1.2',
+        'django-piston>=0.2.2',
+    ],
 )
 
