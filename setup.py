@@ -6,7 +6,7 @@
 #
 from setuptools import setup, find_packages
 
-version = "0.1rc3"
+version = "0.1rc4"
 
 def read(filename):
     import os.path
@@ -33,6 +33,7 @@ setup(
     include_package_data = True,
     install_requires=[
         'setuptools',
+        'setuptools-git',
         'django>=1.2',
         'django-piston>=0.2.2',
     ],

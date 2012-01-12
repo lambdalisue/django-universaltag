@@ -182,7 +182,10 @@ class TaggedItem(models.Model):
     object_id       = models.PositiveIntegerField(_('object ID'))
     content_object  = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
     
+    # TODO: shoud be 'lock'
     frozen          = models.BooleanField(_('is not deletable'), default=False)
+    # TODO: should use django's ordering system (May not usable, so have to find
+    # out)
     order           = models.IntegerField(_('order'), default=-1, blank=True)
     
     objects         = TaggedItemManager()
