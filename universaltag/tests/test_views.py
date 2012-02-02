@@ -32,14 +32,15 @@ __author__  = 'Alisue <lambdalisue@hashnote.net>'
 __version__ = '1.0.0'
 __date__    = '2011/06/09'
 from django.conf import settings
-from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
+from app_test import AppTestCase
 from app.models import Book
 from ..models import Tag, TaggedItem
 
 import os.path
 
-class GeneralViewTestCase(TestCase):
+class GeneralViewTestCase(AppTestCase):
+    installed_apps = ['universaltag.tests.app']
     urls = 'universaltag.urls'
     fixtures = ['test_data.json',]
     template_dirs = (

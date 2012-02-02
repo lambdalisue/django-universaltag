@@ -22,12 +22,13 @@ License:
 __author__  = 'Alisue <lambdalisue@hashnote.net>'
 __version__ = '1.0.0'
 __date__    = '2011/06/09'
-from django.utils import unittest
 from django.contrib.auth.models import User
+from app_test import AppTestCase
 from app.models import Book
 from ..models import TaggedItem
 
-class TaggedItemTestCase(unittest.TestCase):
+class TaggedItemTestCase(AppTestCase):
+    installed_apps = ['universaltag.tests.app']
     def setUp(self):
         self.admin = User.objects.get(pk=1)
         self.book1 = Book(pk=1, title="foo", body="foofoofoo", author=self.admin)

@@ -19,7 +19,7 @@ setup(
     long_description=read('README.rst'),
     classifiers = [
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
     ],
@@ -28,14 +28,17 @@ setup(
     author_email = "lambdalisue@hashnote.net",
     url=r"https://github.com/lambdalisue/django-universaltag",
     download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
-    license = 'BSD',
+    license = 'MIT',
     packages = find_packages(),
     include_package_data = True,
     install_requires=[
-        'setuptools',
+        'distribute',
         'setuptools-git',
-        'django>=1.2',
         'django-piston>=0.2.2',
     ],
+    tests_require = [
+        'django>=1.2',
+    ],
+    test_suite = 'tests.runtests.runtests',
 )
 

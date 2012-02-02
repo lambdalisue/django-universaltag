@@ -2,8 +2,8 @@
 # Django settings for Kawaz project.
 import sys
 import os.path
-ROOT = os.path.join(os.path.dirname(__file__), '../../')
-sys.path.append(os.path.join(ROOT, '../'))
+ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(ROOT, '../'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -103,7 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'universaltag_test.urls'
+ROOT_URLCONF = 'tests.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(ROOT, 'templates'),
@@ -127,8 +127,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'tests.autocmd',
+    'tests.blogs',
     'universaltag',
-    'universaltag_test.blogs',
 )
 
 # A sample logging configuration. The only tangible logging

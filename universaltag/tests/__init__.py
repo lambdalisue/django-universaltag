@@ -22,22 +22,5 @@ License:
 __author__  = 'Alisue <lambdalisue@hashnote.net>'
 __version__ = '1.0.0'
 __date__    = '2011/06/09'
-
-# Add Model dynamically just for testing
-from django.conf import settings
-from django.core.management import call_command
-from django.db.models import loading
-
-INSTALLED_APPS_BACKUP = settings.INSTALLED_APPS
-settings.INSTALLED_APPS += [
-    'universaltag.tests.app',
-]
-
-loading.cache.loaded = False
-call_command('syncdb', verbosity=0)
-
 from test_models import *
 from test_views import *
-
-# Restore INSTALLED_APPS
-settings.INSTALLED_APPS = INSTALLED_APPS_BACKUP
