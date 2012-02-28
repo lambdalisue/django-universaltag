@@ -34,11 +34,11 @@ setup(
     install_requires=[
         'distribute',
         'setuptools-git',
+        'django>=1.2',
         'django-piston>=0.2.2',
     ],
     tests_require = [
-        'django>=1.2',
     ],
-    test_suite = 'tests.runtests.runtests',
+    test_suite = 'runtests.runtests',
 )
 
