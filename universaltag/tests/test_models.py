@@ -30,7 +30,10 @@ from ..models import TaggedItem
 class TaggedItemTestCase(AppTestCase):
     installed_apps = ['universaltag.tests.app']
     def setUp(self):
-        self.admin = User.objects.get(pk=1)
+        self.admin = User.objects.create_superuser(
+                username='universaltag_test_user', email='universaltag_test_user@test.com',
+                password='password'
+            )
         self.book1 = Book(pk=1, title="foo", body="foofoofoo", author=self.admin)
         self.book1.save()
         self.book2 = Book(pk=2, title="bar", body="barbarbar", author=self.admin)
