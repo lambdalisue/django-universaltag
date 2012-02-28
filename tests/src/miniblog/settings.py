@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-# Django settings for Kawaz project.
 import sys
 import os.path
-ROOT = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(ROOT, '../'))
+ROOT = os.path.join(os.path.dirname(__file__), '../../')
+app_path = os.path.join(ROOT, '../')
+
+if app_path not in sys.path:
+    sys.path.insert(0, app_path)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -14,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.sqlite3',   # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME':     os.path.join(ROOT, 'sqlite.db'),# Or path to database file if using sqlite3.
+        'NAME':     os.path.join(ROOT, 'database.db'),# Or path to database file if using sqlite3.
         'USER':     '',                             # Not used with sqlite3.
         'PASSWORD': '',                             # Not used with sqlite3.
         'HOST':     '',                             # Set to empty string for localhost. Not used with sqlite3.
@@ -103,7 +105,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'miniblog.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(ROOT, 'templates'),
@@ -127,8 +129,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'tests.autocmd',
-    'tests.blogs',
+    'miniblog.autocmd',
+    'miniblog.blogs',
     'universaltag',
 )
 

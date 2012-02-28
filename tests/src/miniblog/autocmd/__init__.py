@@ -53,13 +53,13 @@ if settings.AUTO_CREATE_USER:
         try:
             User.objects.get(username=USERNAME)
         except User.DoesNotExist:
-            if verbosity > 0:
+            if verbosity > 1:
                 print '*' * 80
                 print 'Creating test user -- login: %s, password: %s' % (USERNAME, PASSWORD)
                 print '*' * 80
             assert User.objects.create_superuser(USERNAME, EMAIL, PASSWORD)
         else:
-            if verbosity > 0:
+            if verbosity > 1:
                 print 'Test user already exists. -- login: %s, password: %s' % (USERNAME, PASSWORD)
     signals.post_syncdb.disconnect(
         create_superuser,

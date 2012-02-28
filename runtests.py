@@ -28,8 +28,8 @@ License:
 """
 __AUTHOR__ = "lambdalisue (lambdalisue@hashnote.net)"
 import os, sys
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
-test_dir = os.path.dirname(__file__)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'miniblog.settings'
+test_dir = os.path.join(os.path.dirname(__file__), 'tests', 'src')
 sys.path.insert(0, test_dir)
 
 from django.test.utils import get_runner

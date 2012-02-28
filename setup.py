@@ -29,7 +29,7 @@ setup(
     url=r"https://github.com/lambdalisue/django-universaltag",
     download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
     license = 'MIT',
-    packages = find_packages(),
+    packages = find_packages(exclude=['tests']),
     include_package_data = True,
     zip_safe=False,
     install_requires=[
@@ -40,6 +40,6 @@ setup(
     ],
     tests_require = [
     ],
-    test_suite = 'tests.runtests.runtests',
+    test_suite = 'runtests.runtests',
 )
 

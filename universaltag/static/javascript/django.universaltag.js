@@ -101,7 +101,7 @@
 				if(instance.frozen){
 					$tag.addClass(settings.classes.frozen);
 				}
-				$tag.append($('<a>').attr('href', instance.tag.absolute_uri).text(instance.tag.label));
+				$tag.append($('<a>').attr('href', instance.absolute_uri).text(instance.tag.label));
 				$tag.append(factoryToolbox(freezable, isDeletable($tag)));
 				return $tag;
 			}
