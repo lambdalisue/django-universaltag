@@ -6,7 +6,7 @@
 #
 from setuptools import setup, find_packages
 
-version = "0.1rc3"
+version = "0.1.4"
 
 def read(filename):
     import os.path
@@ -29,16 +29,17 @@ setup(
     url=r"https://github.com/lambdalisue/django-universaltag",
     download_url = r"https://github.com/lambdalisue/django-universaltag/tarball/master",
     license = 'MIT',
-    packages = find_packages(),
+    packages = find_packages(exclude=['tests']),
     include_package_data = True,
+    zip_safe=False,
     install_requires=[
         'distribute',
         'setuptools-git',
+        'django>=1.2',
         'django-piston>=0.2.2',
     ],
     tests_require = [
-        'django>=1.2',
     ],
-    test_suite = 'tests.runtests.runtests',
+    test_suite = 'runtests.runtests',
 )
 
