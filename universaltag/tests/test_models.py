@@ -24,12 +24,12 @@ __version__ = '1.0.0'
 __date__    = '2011/06/09'
 from django.contrib.auth.models import User
 from app_test import AppTestCase
-from app.models import Book
 from ..models import TaggedItem
 
 class TaggedItemTestCase(AppTestCase):
     installed_apps = ['universaltag.tests.app']
     def setUp(self):
+        from app.models import Book
         self.admin = User.objects.create_superuser(
                 username='universaltag_test_user', email='universaltag_test_user@test.com',
                 password='password'
@@ -55,6 +55,7 @@ class TaggedItemTestCase(AppTestCase):
         TaggedItem.objects.add_or_get(self.book1, 'test3')
         self.assertEquals(len(self.book1.tags.values()), 3)
     def test_get_for_model(self):
+        from app.models import Book
         TaggedItem.objects.add_or_get(self.book1, 'test1')
         TaggedItem.objects.add_or_get(self.book1, 'test2')
         TaggedItem.objects.add_or_get(self.book1, 'test3')

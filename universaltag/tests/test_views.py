@@ -34,7 +34,6 @@ __date__    = '2011/06/09'
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from app_test import AppTestCase
-from app.models import Book
 from ..models import Tag, TaggedItem
 
 import os.path
@@ -48,6 +47,7 @@ class GeneralViewTestCase(AppTestCase):
     )
     
     def setUp(self):
+        from app.models import Book
         # Set Test TEMPLATE_DIRS
         self._template_dirs_backup = settings.TEMPLATE_DIRS
         settings.TEMPLATE_DIRS = self.template_dirs
