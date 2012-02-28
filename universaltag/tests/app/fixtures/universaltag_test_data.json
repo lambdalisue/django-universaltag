@@ -1,4 +1,5 @@
 [
+{"pk": 1, "model": "auth.user", "fields": {"username": "admin", "password": "sha1$588be$494b93325fbfd299a39691b4dddef29ac0ed3008", "is_active": true, "is_superuser": true, "is_staff": true}},
 {"pk": 1, "model": "app.book", "fields": {"body": "foofoofoo", "title": "foo", "author": 1}},
 {"pk": 2, "model": "app.book", "fields": {"body": "barbarbar", "title": "bar", "author": 1}},
 {"pk": 1, "model": "universaltag.tag", "fields": {"label": "tag1"}},

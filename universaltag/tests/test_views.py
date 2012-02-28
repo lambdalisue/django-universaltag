@@ -42,7 +42,7 @@ import os.path
 class GeneralViewTestCase(AppTestCase):
     installed_apps = ['universaltag.tests.app']
     urls = 'universaltag.urls'
-    fixtures = ['test_data.json',]
+    fixtures = ['universaltag_test_data.json',]
     template_dirs = (
         os.path.join(os.path.dirname(__file__), 'templates'),
     )
@@ -118,7 +118,7 @@ class GeneralViewTestCase(AppTestCase):
         self.assertEquals(response.status_code, 401)
         
         # Required to be authenticated user
-        self.assertTrue(self.client.login(username='admin', password='admin'))
+        self.assertTrue(self.client.login(username='admin', password='password'))
         
         # Freeze
         response = self.client.put(url)
