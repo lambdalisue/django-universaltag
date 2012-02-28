@@ -6,7 +6,7 @@
 #
 from setuptools import setup, find_packages
 
-version = "0.1rc3"
+version = "0.1.4"
 
 def read(filename):
     import os.path
@@ -31,6 +31,7 @@ setup(
     license = 'MIT',
     packages = find_packages(),
     include_package_data = True,
+    zip_safe=False,
     install_requires=[
         'distribute',
         'setuptools-git',
