@@ -74,7 +74,7 @@ class AppTestCase(test.TestCase):
         settings.MIDDLEWARE_CLASSES = self._get_middleware_classes()
         # Call syncdb to create db for extra apps (migrate=False for South)
         loading.cache.loaded = False
-        call_command('syncdb', interactive=False, verbosity=0, migrate=False)
+        call_command('syncdb', interactive=False, verbosity=0, migrate=False, migrate_all=True)
         # Call the original method that does the fixtures etc.
         super(AppTestCase, self)._pre_setup()
 
